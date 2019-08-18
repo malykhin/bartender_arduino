@@ -19,6 +19,8 @@ constexpr char SET_SETTINGS[] = "SET_SETTINGS";
 constexpr char RESET[] = "RESET";
 constexpr char MOVE_TO[] = "MOVE_TO";
 constexpr char PUSH_DOZER[] = "PUSH_DOZER";
+constexpr char IDLE_DOZER[] = "IDLE_DOZER";
+constexpr char PREPARE_DOZER[] = "PREPARE_DOZER";
 constexpr char GET_STATUS[] = "GET_STATUS";
 
 // responses

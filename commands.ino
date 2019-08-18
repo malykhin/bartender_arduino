@@ -36,3 +36,10 @@ void pushDozer(int on, int off, int cycleDuration) {
   delay(SERVO_DELAY);
   servo.detach();
 }
+
+void setDozerPosition(int pos) {
+  servo.attach(SERVO);
+  servo.write(pos);
+  delay(SERVO_DELAY);
+  servo.detach();
+}

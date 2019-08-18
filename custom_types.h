@@ -6,5 +6,6 @@ typedef struct {
   int accel;
   int dozerOn;
   int dozerOff;
+  int dozerIdle;
   int dozerCycleDelay;
 } settings_t;

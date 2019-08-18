@@ -51,6 +51,7 @@ void manage () {
     response["accel"] = settings.accel;
     response["dozerOn"] = settings.dozerOn;
     response["dozerOff"] = settings.dozerOff;
+    response["dozerIdle"] = settings.dozerIdle;
     response["dozerCycleDelay"] = settings.dozerCycleDelay;
 
     serializeJson(response, Serial);
@@ -66,6 +67,7 @@ void manage () {
     settings.accel =  message["accel"];
     settings.dozerOn = message["dozerOn"];
     settings.dozerOff = message["dozerOff"];
+    settings.dozerIdle = message["dozerIdle"];
     settings.dozerCycleDelay = message["dozerCycleDelay"];
 
     EEPROM.put(SETTINGS_ADDR, settings);
@@ -82,6 +84,18 @@ void manage () {
 
   if ((String)command == (String)PUSH_DOZER) {
     pushDozer(settings.dozerOn, settings.dozerOff, settings.dozerCycleDelay);
+    Serial.println(RESPONSE_OK);
+    return;
+  }
+
+  if ((String)command == (String)IDLE_DOZER) {
+    setDozerPosition(settings.dozerIdle);
+    Serial.println(RESPONSE_OK);
+    return;
+  }
+
+  if ((String)command == (String)PREPARE_DOZER) {
+    setDozerPosition(settings.dozerIdle);
     Serial.println(RESPONSE_OK);
     return;
   }
