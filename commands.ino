@@ -29,17 +29,13 @@ bool zeroAxis(int speed, int accel, int stroke) {
 
 
 void pushDozer(int on, int off, int cycleDuration) {
-  servo.attach(SERVO);
   servo.write(on);
   delay(cycleDuration);
   servo.write(off);
   delay(SERVO_DELAY);
-  servo.detach();
 }
 
 void setDozerPosition(int pos) {
-  servo.attach(SERVO);
   servo.write(pos);
   delay(SERVO_DELAY);
-  servo.detach();
 }

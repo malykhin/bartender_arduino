@@ -1,16 +1,19 @@
 // pins
 #define   STEP               3
 #define   DIR                6
+#define   NOT_EN             8
+
 #define   NOT_LIMIT          A3
 #define   SERVO              9
 #define   NOT_GLASS_SENSOR   A2
 
+ 
 // adresses
 #define   SETTINGS_ADDR      0
 
 // settings
 #define   BAUD_RATE          57600
-#define   BUFFER_SIZE        512
+#define   BUFFER_SIZE        256
 #define   SERVO_DELAY        500
 
 // commands

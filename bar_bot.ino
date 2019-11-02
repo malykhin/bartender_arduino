@@ -18,10 +18,15 @@ void setup() {
   pinMode(NOT_LIMIT, INPUT);
   pinMode(NOT_GLASS_SENSOR, INPUT);
 
+  pinMode(NOT_EN, OUTPUT);
+  digitalWrite(NOT_EN, LOW);
+  
   EEPROM.get(SETTINGS_ADDR, settings);
 
   Serial.begin(BAUD_RATE);
   Serial.println(RESPONSE_READY);
+
+  servo.attach(SERVO);
 }
 
 void loop() {
@@ -29,7 +34,6 @@ void loop() {
     manage();
     inputString = "";
     stringComplete = false;
-    delay(200);
   }
 }
 
@@ -55,7 +59,7 @@ void manage () {
     response["dozerCycleDelay"] = settings.dozerCycleDelay;
 
     serializeJson(response, Serial);
-    Serial.println();
+    Serial.println("");
     return;
   }
 
@@ -73,11 +77,12 @@ void manage () {
     EEPROM.put(SETTINGS_ADDR, settings);
 
     Serial.println(RESPONSE_OK);
+    Serial.println("");
     return;
   }
 
   if ((String)command == (String)MOVE_TO) {
-    moveTo(settings.speed, settings.accel, message["position"]);
+    moveTo(settings.speed, settings.accel, (int)message["position"]);
     Serial.println(RESPONSE_OK);
     return;
   }
@@ -95,18 +100,17 @@ void manage () {
   }
 
   if ((String)command == (String)PREPARE_DOZER) {
-    setDozerPosition(settings.dozerIdle);
+    setDozerPosition(settings.dozerOff);
     Serial.println(RESPONSE_OK);
     return;
   }
 
   if ((String)command == (String)RESET) {
-    servo.attach(SERVO);
-    servo.write(settings.dozerOff);
-    delay(SERVO_DELAY);
-    servo.detach();
+    EEPROM.get(SETTINGS_ADDR, settings);
 
-    const bool isAtHome = zeroAxis(settings.zeroSpeed, settings.zeroAccel, settings.maxStroke);
+    setDozerPosition(settings.dozerOff);
+
+    const bool isAtHome = zeroAxis(settings.zeroSpeed, settings.zeroAccel, -settings.maxStroke);
     if (isAtHome) {
       Serial.println(RESPONSE_OK);
     } else {
@@ -126,21 +130,13 @@ void manage () {
     response["isGlassInserted"] = isGlassInserted;
 
     serializeJson(response, Serial);
-    Serial.println();
+    Serial.println("");
   }
 }
 
 void serialEvent() {
   while ( Serial.available() ) {
-    char inChar = (char) Serial.read();
-    if (charCounter == 0 && inChar != '{') {
-      continue;
-    } else if (inChar == '\n') {
-      charCounter = 0;
-      stringComplete = true;
-    } else {
-      inputString += inChar;
-      charCounter++;
-    }
+    inputString = Serial.readStringUntil('\n');
+    stringComplete = true;
   }
 }
