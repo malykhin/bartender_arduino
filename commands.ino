@@ -32,7 +32,7 @@ void pushDozer(int on, int off, int cycleDuration) {
   servo.write(on);
   delay(cycleDuration);
   servo.write(off);
-  delay(SERVO_DELAY);
+  delay(cycleDuration);
 }
 
 void setDozerPosition(int pos) {
