@@ -28,11 +28,15 @@ bool zeroAxis(int speed, int accel, int stroke) {
 }
 
 
-void pushDozer(int on, int off, int cycleDuration) {
+void pushDozer(int on, int off, int cycleDuration, bool isLastPush) {
   servo.write(on);
   delay(cycleDuration);
   servo.write(off);
-  delay(cycleDuration);
+  if (isLastPush) {
+    delay(SERVO_DELAY);
+  } else {
+    delay(cycleDuration);
+  }
 }
 
 void setDozerPosition(int pos) {

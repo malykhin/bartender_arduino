@@ -88,7 +88,7 @@ void manage () {
   }
 
   if ((String)command == (String)PUSH_DOZER) {
-    pushDozer(settings.dozerOn, settings.dozerOff, settings.dozerCycleDelay);
+    pushDozer(settings.dozerOn, settings.dozerOff, settings.dozerCycleDelay, message["isLastPush"]);
     Serial.println(RESPONSE_OK);
     return;
   }
