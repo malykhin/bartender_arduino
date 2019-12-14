@@ -32,3 +32,7 @@ constexpr char RESPONSE_OK[] = "{\"status\": \"OK\"}";
 constexpr char RESPONSE_READY[] = "{\"status\": \"READY\"}";
 constexpr char RESPONSE_NOT_HOMED[] = "{\"status\": \"NOT_HOMED\"}";
 constexpr char RESPONSE_GLASS_NOT_INSERTED[] = "{\"status\": \"GLASS_NOT_INSERTED\"}";
+
+// types
+
+constexpr char GLASS_STATUS_CHANGED[] = "GLASS_STATUS_CHANGED";

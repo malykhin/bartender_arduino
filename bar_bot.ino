@@ -11,8 +11,10 @@ Servo servo;
 
 settings_t settings;
 bool stringComplete = false;
+bool prevIsGlassInserted = false;
 String inputString = "";
 int charCounter = 0;
+
 
 void setup() {
   pinMode(NOT_LIMIT, INPUT);
@@ -20,6 +22,8 @@ void setup() {
 
   pinMode(NOT_EN, OUTPUT);
   digitalWrite(NOT_EN, LOW);
+
+  prevIsGlassInserted = !digitalRead(NOT_GLASS_SENSOR);
   
   EEPROM.get(SETTINGS_ADDR, settings);
 
@@ -30,6 +34,19 @@ void setup() {
 }
 
 void loop() {
+  if (prevIsGlassInserted == digitalRead(NOT_GLASS_SENSOR) && inputString.length() == 0) {
+    DynamicJsonDocument response(BUFFER_SIZE);
+
+    prevIsGlassInserted = !digitalRead(NOT_GLASS_SENSOR);
+
+    response["type"] = GLASS_STATUS_CHANGED;
+    response["isGlassInserted"] = prevIsGlassInserted;
+
+    serializeJson(response, Serial);
+    Serial.println("");
+    
+  }
+  
   if (stringComplete) {
     manage();
     inputString = "";
